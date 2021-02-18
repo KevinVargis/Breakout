@@ -6,6 +6,7 @@ class paddle:
         self.oldx = 25
         self.oldy = 1
         self.size = 5
+        self.oldsize = 5
         self.speed = 2
 
     def move(self, dir):

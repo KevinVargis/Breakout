@@ -64,7 +64,7 @@ class ball:
         else:
             cur = datetime.now()
             cur = (cur - self.time).total_seconds()
-            if cur > 0.05:
+            if cur > 0.1:
                 self.time = datetime.now()
                 self.oldx = self.x
                 self.oldy = self.y
@@ -122,7 +122,8 @@ class ball:
                         else:
                             self.x = int(self.hit[pos]['x'])
                             self.y = int(self.hit[pos]['y'])
-                            Bricks[self.hit[pos]['id']].lives = Bricks[self.hit[pos]['id']].lives - 1;
+                            if Bricks[self.hit[pos]['id']].lives != -1:
+                                Bricks[self.hit[pos]['id']].lives = Bricks[self.hit[pos]['id']].lives - 1;
                         # print(self.x)
                         # print(self.y)
                         if self.hit[pos]['d'] == 'y':
