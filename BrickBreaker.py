@@ -8,6 +8,7 @@ from Ball import Ball
 from Brick import Bricks
 import Lines
 import PowerUps
+from random import randint
 
 lett = ' '
 no = 0
@@ -23,8 +24,9 @@ while True:
     for i in range(Paddle.size*2 + 1):
         Board.grid[Paddle.y][Paddle.x-Paddle.size+i] = '='
 
-    Board.grid[Ball.oldy][Ball.oldx] = ' '
-    Board.grid[Ball.y][Ball.x] = 'o'
+    Board.grid[int(Ball.oldy)][int(Ball.oldx)] = ' '
+    print(Ball.x, Ball.y)
+    Board.grid[int(Ball.y)][int(Ball.x)] = 'o'
 
     for boi in Bricks:
         if boi.lives == -2:
@@ -37,8 +39,13 @@ while True:
             Lines.lines.remove({'x1':x-0.499, 'x2':x+1.499, 'y1':y+1.499, 'y2':y+1.499, 'd':'y', 'id':count, 'dir': 'u'})
             Lines.lines.remove({'x1':x+1.499, 'x2':x+1.499, 'y1':y-0.499, 'y2':y+1.499, 'd':'x', 'id':count, 'dir': 'r'})
             Lines.lines.remove({'x1':x-0.499, 'x2':x-0.499, 'y1':y-0.499, 'y2':y+1.499, 'd':'x', 'id':count, 'dir': 'l'})
-            if no < 1:
-                Lines.Pows.append(PowerUps.expow(x, y))
+            if no < 3:
+                # pick = randint(1, 2)
+                # if pick == 1:
+                #     Lines.Pows.append(PowerUps.expow(x, y))
+                # elif pick == 2:
+                #     Lines.Pows.append(PowerUps.shpow(x, y))
+                Lines.Pows.append(PowerUps.fspow(x, y))
                 no = no+1
             # Bricks.remove(boi)
             boi.lives = -2
@@ -60,7 +67,12 @@ while True:
     for boi in Lines.Pows:
         Board.grid[boi.oldy][boi.oldx] = ' '
         if boi.active == False:
-            Board.grid[boi.y][boi.x] = 'X'
+            if boi.type == 'exp':
+                Board.grid[boi.y][boi.x] = 'X'
+            elif boi.type == 'shr':
+                Board.grid[boi.y][boi.x] = 'S'
+            elif boi.type == 'fst':
+                Board.grid[boi.y][boi.x] = 'F'
 
     # _ = system('clear')
     # print(u'\u001b[{10}F')
@@ -73,7 +85,7 @@ while True:
         elif lett == 'p':
             if Lines.start == True:
                 # print('hai')
-                Ball.vy = 2
+                Ball.vx = 0
                 Lines.start = False
                 # Ball.y = 25
     # else:

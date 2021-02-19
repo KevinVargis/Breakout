@@ -15,20 +15,22 @@ class ball:
     # lines = [{'x1':0, 'x2':0, 'y1':0, 'y2':49, 'd':'x'}, {'x1':99, 'x2':99, 'y1':0, 'y2':49, 'd':'x'}, {'x1':0, 'x2':99, 'y1':49, 'y2':49, 'd':'y'}]
     def __init__(self):
         self.x = 50
+        self.o = 2
         self.y = 2
         self.oldx = 25
         self.oldy = 2
         self.vx = 0
-        self.vy = 1
+        self.vy = 2
         self.time = datetime.now()
         
     def reset(self, x, y):
         self.x = 50
         self.y = 2
+        self.o = y
         self.oldx = x
         self.oldy = y
-        self.vx = 0
-        self.vy = 0
+        # self.vx = 0
+        # self.vy = 0
         # global Lines.start
         Lines.start = True
     
@@ -59,6 +61,7 @@ class ball:
         # print(Lines.start)
         if Lines.start == True:
             self.oldx = self.x
+            self.o = self.oldy
             self.oldy = self.y
             self.x = Paddle.x
         else:
@@ -67,6 +70,7 @@ class ball:
             if cur > 0.1:
                 self.time = datetime.now()
                 self.oldx = self.x
+                self.o = self.oldy
                 self.oldy = self.y
                 self.x = self.x + self.vx
                 self.y = self.y + self.vy
@@ -93,7 +97,7 @@ class ball:
                             mini = i['dist']
                             pos = cou
                     cou = cou + 1
-                print('hmm', pos)
+                # print('hmm', pos)
                 if pos != -1:
                     if(self.hit[pos]['d'] == 'r'):
                         self.reset(self.oldx, self.oldy)
@@ -130,6 +134,12 @@ class ball:
                             self.vy = self.vy * -1
                         else:
                             self.vx = self.vx * -1
+                    if self.y == self.o:
+                        # if self.y == 48:
+                        #     self.y = self.y -1
+                        # el
+                        if self.y != 2:
+                            self.y = self.y + 1
                         # return
 
 Ball = ball()
