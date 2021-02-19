@@ -4,11 +4,14 @@ from Board import Board
 from input import *
 from Paddle import Paddle
 import numpy as np
-from Ball import Ball
+import Ball
 from Brick import Bricks
 import Lines
 import PowerUps
 from random import randint
+
+def startup():
+    Ball.Balls.append(Ball.ball())
 
 lett = ' '
 no = 0
@@ -17,16 +20,24 @@ _ = system('clear')
 
 while True:
     
+    if not Ball.Balls:
+        Ball.Balls.append(Ball.ball())
+        # Lines.start = True
+        Lines.Pows = []
+        # Lines.grab = False
+        Lines.through = False
+        Paddle.oldsize = Paddle.size
+        Paddle.size = 5
 
     for i in range(Paddle.oldsize*2 + 1):
         Board.grid[Paddle.oldy][Paddle.oldx-Paddle.oldsize+i] = ' ' 
     Paddle.oldsize = Paddle.size
     for i in range(Paddle.size*2 + 1):
         Board.grid[Paddle.y][Paddle.x-Paddle.size+i] = '='
-
-    Board.grid[int(Ball.oldy)][int(Ball.oldx)] = ' '
-    print(Ball.x, Ball.y)
-    Board.grid[int(Ball.y)][int(Ball.x)] = 'o'
+    for boi in Ball.Balls:
+        Board.grid[int(boi.oldy)][int(boi.oldx)] = ' '
+        # print(boi.x, boi.y)
+        Board.grid[int(boi.y)][int(boi.x)] = 'o'
 
     for boi in Bricks:
         if boi.lives == -2:
@@ -35,17 +46,17 @@ while True:
             x = boi.x
             y = boi.y
             count = boi.cnt
-            Lines.lines.remove({'x1':x-0.499, 'x2':x+1.499, 'y1':y-0.499, 'y2':y-0.499, 'd':'y', 'id':count, 'dir': 'd'})
-            Lines.lines.remove({'x1':x-0.499, 'x2':x+1.499, 'y1':y+1.499, 'y2':y+1.499, 'd':'y', 'id':count, 'dir': 'u'})
-            Lines.lines.remove({'x1':x+1.499, 'x2':x+1.499, 'y1':y-0.499, 'y2':y+1.499, 'd':'x', 'id':count, 'dir': 'r'})
-            Lines.lines.remove({'x1':x-0.499, 'x2':x-0.499, 'y1':y-0.499, 'y2':y+1.499, 'd':'x', 'id':count, 'dir': 'l'})
+            Lines.lines.remove({'x1':x-0.5, 'x2':x+1.5, 'y1':y-0.5, 'y2':y-0.5, 'd':'y', 'id':count, 'dir': 'd'})
+            Lines.lines.remove({'x1':x-0.5, 'x2':x+1.5, 'y1':y+1.5, 'y2':y+1.5, 'd':'y', 'id':count, 'dir': 'u'})
+            Lines.lines.remove({'x1':x+1.5, 'x2':x+1.5, 'y1':y-0.5, 'y2':y+1.5, 'd':'x', 'id':count, 'dir': 'r'})
+            Lines.lines.remove({'x1':x-0.5, 'x2':x-0.5, 'y1':y-0.5, 'y2':y+1.5, 'd':'x', 'id':count, 'dir': 'l'})
             if no < 3:
                 # pick = randint(1, 2)
                 # if pick == 1:
                 #     Lines.Pows.append(PowerUps.expow(x, y))
                 # elif pick == 2:
                 #     Lines.Pows.append(PowerUps.shpow(x, y))
-                Lines.Pows.append(PowerUps.fspow(x, y))
+                Lines.Pows.append(PowerUps.mlpow(x, y))
                 no = no+1
             # Bricks.remove(boi)
             boi.lives = -2
@@ -73,6 +84,12 @@ while True:
                 Board.grid[boi.y][boi.x] = 'S'
             elif boi.type == 'fst':
                 Board.grid[boi.y][boi.x] = 'F'
+            elif boi.type == 'grb':
+                Board.grid[boi.y][boi.x] = 'G'
+            elif boi.type == 'thr':
+                Board.grid[boi.y][boi.x] = 'T'
+            elif boi.type == 'mlt':
+                Board.grid[boi.y][boi.x] = 'M'
 
     # _ = system('clear')
     # print(u'\u001b[{10}F')
@@ -83,10 +100,9 @@ while True:
             _ = system('clear')
             break
         elif lett == 'p':
-            if Lines.start == True:
-                # print('hai')
-                Ball.vx = 0
-                Lines.start = False
+            for boi in Ball.Balls:
+                if boi.start == True:
+                    boi.start = False
                 # Ball.y = 25
     # else:
     #     print(Paddle.x, type(lett))
@@ -112,7 +128,11 @@ while True:
         print(' ')
     lett = input_to(Get())
     Paddle.move(lett)
-    Ball.move()
+    # print(Ball)
+    for boi in Ball.Balls:
+        Board.grid[boi.y][boi.x] = ' '
+        if boi.move() == -1:
+            Ball.Balls.remove(boi)
     for bois in Lines.Pows:
         Board.grid[bois.y][bois.x] = ' '
         if bois.move() == -1:

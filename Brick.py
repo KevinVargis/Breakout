@@ -7,10 +7,10 @@ class brick():
         self.x = x
         self.y = y
         global count
-        lines.append({'x1':x-0.499, 'x2':x+1.499, 'y1':y-0.499, 'y2':y-0.499, 'd':'y', 'id':count, 'dir': 'd'})
-        lines.append({'x1':x-0.499, 'x2':x+1.499, 'y1':y+1.499, 'y2':y+1.499, 'd':'y', 'id':count, 'dir': 'u'})
-        lines.append({'x1':x+1.499, 'x2':x+1.499, 'y1':y-0.499, 'y2':y+1.499, 'd':'x', 'id':count, 'dir': 'r'})
-        lines.append({'x1':x-0.499, 'x2':x-0.499, 'y1':y-0.499, 'y2':y+1.499, 'd':'x', 'id':count, 'dir': 'l'})
+        lines.append({'x1':x-0.5, 'x2':x+1.5, 'y1':y-0.5, 'y2':y-0.5, 'd':'y', 'id':count, 'dir': 'd'})
+        lines.append({'x1':x-0.5, 'x2':x+1.5, 'y1':y+1.5, 'y2':y+1.5, 'd':'y', 'id':count, 'dir': 'u'})
+        lines.append({'x1':x+1.5, 'x2':x+1.5, 'y1':y-0.5, 'y2':y+1.5, 'd':'x', 'id':count, 'dir': 'r'})
+        lines.append({'x1':x-0.5, 'x2':x-0.5, 'y1':y-0.5, 'y2':y+1.5, 'd':'x', 'id':count, 'dir': 'l'})
         # Ball.lines.append({'x1':x, 'x2':x+1, 'y1':y, 'y2':y, 'd':'y', 'id':count})
         # Ball.lines.append({'x1':x, 'x2':x+1, 'y1':y+1, 'y2':y+1, 'd':'y', 'id':count})
         # Ball.lines.append({'x1':x+1, 'x2':x+1, 'y1':y, 'y2':y+1, 'd':'x', 'id':count})
