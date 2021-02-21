@@ -88,10 +88,11 @@ class fspow(powerup):
             cur = datetime.now()
             cur = (cur - self.time).total_seconds()
             if(cur > 30):
-                if Ball.vx > 1 or Ball.vx < -1:
-                   Ball.vx = Ball.vx - Ball.vx/abs(Ball.vx)
-                if Ball.vy > 1 or Ball.vy < -1:
-                   Ball.vy = Ball.vy - Ball.vy/abs(Ball.vy)
+                for bol in Ball.Balls:
+                    if bol.vx > 1 or bol.vx < -1:
+                        bol.vx = bol.vx - bol.vx/abs(bol.vx)
+                    if bol.vy > 1 or bol.vy < -1:
+                        bol.vy = bol.vy - bol.vy/abs(bol.vy)
                 return -1
         else:
             cur = datetime.now()
@@ -99,10 +100,11 @@ class fspow(powerup):
             if cur > 0.1:
                 if self.y == 2:
                     if self.x >= (Paddle.x - Paddle.size) and self.x <= (Paddle.x + Paddle.size):
-                        if Ball.vx != 0:
-                            Ball.vx = Ball.vx + Ball.vx/abs(Ball.vx)
-                        if Ball.vy != 0:
-                            Ball.vy = Ball.vy + Ball.vy/abs(Ball.vy)
+                        for bol in Ball.Balls:
+                            if bol.vx != 0:
+                                bol.vx = bol.vx + bol.vx/abs(bol.vx)
+                            if bol.vy != 0:
+                                bol.vy = bol.vy + bol.vy/abs(bol.vy)
                         self.active = True
                         self.time = datetime.now()
                     else:
@@ -187,8 +189,9 @@ class mlpow(powerup):
             cur = (cur - self.time).total_seconds()
             if(cur > 30):
                 num = len(Ball.Balls)
-                while len(Ball.Balls) > (num/2):
-                    Ball.Balls.pop()
+                if num > 1:
+                    while len(Ball.Balls) > (num/2):
+                        Ball.Balls.pop()
                 return -1
         else:
             cur = datetime.now()

@@ -136,8 +136,12 @@ class ball():
                                     self.vx = self.vx + 1
                         else:
                             if Lines.through == False:
-                                self.x = int(self.hit[pos]['x'])
-                                self.y = int(self.hit[pos]['y'])
+                                # self.x = int(self.hit[pos]['x'])
+                                # self.y = int(self.hit[pos]['y'])
+                                if self.vx != 0:
+                                    self.x = int(self.hit[pos]['x'] - self.vx/abs(self.vx))
+                                if self.vy != 0:
+                                    self.y = int(self.hit[pos]['y'] - self.vy/abs(self.vy))
                                 if Bricks[self.hit[pos]['id']].lives != -1:
                                     Bricks[self.hit[pos]['id']].lives = Bricks[self.hit[pos]['id']].lives - 1;
                                     
@@ -161,12 +165,22 @@ class ball():
                         if self.y != 2:
                             self.y = self.y + 1
                         # return
-                if self.y == 49:
+                if self.y >= 49:
                     self.y = 48
                     self.vy = abs(self.vy) * -1
+                if self.x >= 99:
+                    self.x = 98
+                    self.vx = abs(self.vx) * -1
+                if self.y <= 0:
+                    self.y = 1
+                    self.vy = abs(self.vy)
+                if self.x <= 0:
+                    self.x = 1
+                    self.vx = abs(self.vx)
                 if Lines.grab == True and self.y == 2 and self.x >= (Paddle.x - Paddle.size) and self.x <= (Paddle.x + Paddle.size):
                     self.start = True
                     self.offset = Paddle.x - self.x
+        return 0
 
 # Ball = ball()
 

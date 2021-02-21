@@ -22,11 +22,19 @@ class brick_reg(brick):
     def __init__(self, x, y, lives):
         super().__init__(x, y)
         self.lives = lives
+        self.boom = False
 
 class brick_unbreak(brick):
     def __init__(self, x, y):
         super().__init__(x, y)
         self.lives = -1
+        self.boom = False
+
+class brick_exp(brick):
+    def __init__(self, x, y):
+        super().__init__(x, y)
+        self.lives = 1
+        self.boom = True
 
 # class brick3(brick):
 #     def __init__(self, x, y):
@@ -41,6 +49,12 @@ for i in range(8):
 
 for i in range(8):
     Bricks.append(brick_reg(53+(i*2), 25, 3))
+
+for i in range(6):
+    Bricks.append(brick_exp(39+(i*2), 27))
+
+for i in range(6):
+    Bricks.append(brick_exp(39+(i*2), 33))
 
 for i in range(13):
     Bricks.append(brick_unbreak(15+(i*5), 35))

@@ -9,6 +9,7 @@ from Brick import Bricks
 import Lines
 import PowerUps
 from random import randint
+from datetime import datetime
 
 def startup():
     Ball.Balls.append(Ball.ball())
@@ -16,10 +17,50 @@ def startup():
 lett = ' '
 no = 0
 
+Lives = 4
+Score = 0
+timer = datetime.now()
 _ = system('clear')
 
-while True:
-    
+while Lives > 0:
+    # sys.exit()
+    Board.grid[50][2] = 'S'
+    Board.grid[50][3] = 'c'
+    Board.grid[50][4] = 'o'
+    Board.grid[50][5] = 'r'
+    Board.grid[50][6] = 'e'
+    Board.grid[50][8] = '-'
+    sk = Score
+    for i in range(3):
+        Board.grid[50][12-i] = str(sk%10)
+        sk = sk/10
+
+    Board.grid[50][44] = 'T'
+    Board.grid[50][45] = 'i'
+    Board.grid[50][46] = 'm'
+    Board.grid[50][47] = 'e'
+    Board.grid[50][49] = '-'
+    Board.grid[50][53] = ':'
+
+    cur = datetime.now()
+    cur = (cur - timer).total_seconds()
+    sec = cur %60
+    minu = cur/60
+    for i in range(2):
+        Board.grid[50][52-i] = str(minu%10)
+        minu = minu/10
+    for i in range(2):
+        Board.grid[50][55-i] = str(sec%10)
+        sec = sec/10
+
+    Board.grid[50][89] = 'L'
+    Board.grid[50][90] = 'i'
+    Board.grid[50][91] = 'v'
+    Board.grid[50][92] = 'e'
+    Board.grid[50][93] = 's'
+    Board.grid[50][95] = '-'
+    Board.grid[50][97] = str(Lives)
+
     if not Ball.Balls:
         Ball.Balls.append(Ball.ball())
         # Lines.start = True
@@ -28,6 +69,7 @@ while True:
         Lines.through = False
         Paddle.oldsize = Paddle.size
         Paddle.size = 5
+        Lives = Lives - 1
 
     for i in range(Paddle.oldsize*2 + 1):
         Board.grid[Paddle.oldy][Paddle.oldx-Paddle.oldsize+i] = ' ' 
@@ -50,20 +92,41 @@ while True:
             Lines.lines.remove({'x1':x-0.5, 'x2':x+1.5, 'y1':y+1.5, 'y2':y+1.5, 'd':'y', 'id':count, 'dir': 'u'})
             Lines.lines.remove({'x1':x+1.5, 'x2':x+1.5, 'y1':y-0.5, 'y2':y+1.5, 'd':'x', 'id':count, 'dir': 'r'})
             Lines.lines.remove({'x1':x-0.5, 'x2':x-0.5, 'y1':y-0.5, 'y2':y+1.5, 'd':'x', 'id':count, 'dir': 'l'})
-            if no < 3:
-                # pick = randint(1, 2)
-                # if pick == 1:
-                #     Lines.Pows.append(PowerUps.expow(x, y))
-                # elif pick == 2:
-                #     Lines.Pows.append(PowerUps.shpow(x, y))
+            # if no < 3:
+            #     Lines.Pows.append(PowerUps.mlpow(x, y))
+            #     no = no+1
+            Score = Score+10
+            pick = randint(1, 25)
+            if pick == 1:
+                Lines.Pows.append(PowerUps.expow(x, y))
+            elif pick == 2:
+                Lines.Pows.append(PowerUps.shpow(x, y))
+            elif pick == 3:
                 Lines.Pows.append(PowerUps.mlpow(x, y))
-                no = no+1
+            elif pick == 4:
+                Lines.Pows.append(PowerUps.fspow(x, y))
+            elif pick == 5:
+                Lines.Pows.append(PowerUps.trpow(x, y))
+            elif pick == 6:
+                Lines.Pows.append(PowerUps.grpow(x, y))
             # Bricks.remove(boi)
             boi.lives = -2
             Board.grid[boi.y][boi.x] = ' '
             Board.grid[boi.y+1][boi.x] = ' '
             Board.grid[boi.y][boi.x+1] = ' '
             Board.grid[boi.y+1][boi.x+1] = ' '
+            if boi.boom == True:
+                Score = Score + 10
+                for boi2 in Bricks:
+                    if boi2.x >= x-2 and boi2.x <= x+2:
+                        if boi2.y >= y-2 and boi2.y <= y+2:
+                            if boi2.lives != -2:
+                                boi2.lives = 0
+        elif boi.boom == True:
+            Board.grid[boi.y][boi.x] = 'X'
+            Board.grid[boi.y+1][boi.x] = 'X'
+            Board.grid[boi.y][boi.x+1] = 'X'
+            Board.grid[boi.y+1][boi.x+1] = 'X'
         elif boi.lives == -1:
             Board.grid[boi.y][boi.x] = 'B'
             Board.grid[boi.y+1][boi.x] = 'B'
@@ -79,7 +142,7 @@ while True:
         Board.grid[boi.oldy][boi.oldx] = ' '
         if boi.active == False:
             if boi.type == 'exp':
-                Board.grid[boi.y][boi.x] = 'X'
+                Board.grid[boi.y][boi.x] = 'E'
             elif boi.type == 'shr':
                 Board.grid[boi.y][boi.x] = 'S'
             elif boi.type == 'fst':
@@ -108,7 +171,7 @@ while True:
     #     print(Paddle.x, type(lett))
     
     # print('\n'.join(''.join(map(str, Board.grid[i])) for i in range(np.shape(Board.grid)[0]-1, -1, -1)))
-    for i in range(49, -1, -1):
+    for i in range(51, -1, -1):
         sys.stdout.write('\u001b[150D')
         for j in range(100):
             if Board.grid[i][j] == '3':
@@ -123,20 +186,32 @@ while True:
             elif Board.grid[i][j] == 'B':
                 sys.stdout.write('\u001b[46m')
                 sys.stdout.write('\u001b[37m')
+            elif Board.grid[i][j] == 'X':
+                sys.stdout.write('\u001b[47m')
+                sys.stdout.write('\u001b[30m')
+            if i == 50:
+                sys.stdout.write('\u001b[0m')
+                
             sys.stdout.write(Board.grid[i][j])
             sys.stdout.write('\u001b[0m')
         print(' ')
     lett = input_to(Get())
+    if Score == 510:
+        print("You have cleared all the bricks!")
+        sys.exit()
     Paddle.move(lett)
     # print(Ball)
     for boi in Ball.Balls:
-        Board.grid[boi.y][boi.x] = ' '
+        Board.grid[int(boi.y)][int(boi.x)] = ' '
         if boi.move() == -1:
             Ball.Balls.remove(boi)
     for bois in Lines.Pows:
-        Board.grid[bois.y][bois.x] = ' '
+        Board.grid[int(bois.y)][int(bois.x)] = ' '
         if bois.move() == -1:
             Lines.Pows.remove(bois)
+if Lives == 0:
+    print("Out of lives")
+print("Thanks for playing!")
 
 # print(Board.grid)
 
