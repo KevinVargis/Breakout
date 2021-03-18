@@ -7,5 +7,6 @@ lines = [{'x1':0, 'x2':0, 'y1':0, 'y2':49, 'd':'x', 'id':'wall', 'dir': 'r'},
 start = True
 grab = False
 through = False
+count = 0
 
 Pows = []

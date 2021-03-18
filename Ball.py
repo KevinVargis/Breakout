@@ -138,16 +138,22 @@ class ball():
                             if Lines.through == False:
                                 # self.x = int(self.hit[pos]['x'])
                                 # self.y = int(self.hit[pos]['y'])
+                                Bricks[self.hit[pos]['id']].vx = self.vx;
+                                Bricks[self.hit[pos]['id']].vy = self.vy;
                                 if self.vx != 0:
                                     self.x = int(self.hit[pos]['x'] - self.vx/abs(self.vx))
                                 if self.vy != 0:
                                     self.y = int(self.hit[pos]['y'] - self.vy/abs(self.vy))
                                 if Bricks[self.hit[pos]['id']].lives != -1:
                                     Bricks[self.hit[pos]['id']].lives = Bricks[self.hit[pos]['id']].lives - 1;
+                                    Bricks[self.hit[pos]['id']].peacock = False
                                     
                             else:
                                 # if Bricks[self.hit[pos]['id']].lives != -1:
+                                Bricks[self.hit[pos]['id']].peacock = False
                                 Bricks[self.hit[pos]['id']].lives = 0;
+                                Bricks[self.hit[pos]['id']].vx = self.vx;
+                                Bricks[self.hit[pos]['id']].vy = self.vy;
                                 if self.hit[pos]['d'] == 'y':
                                     self.vy = self.vy * -1
                                 else:
